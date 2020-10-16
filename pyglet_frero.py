@@ -59,15 +59,19 @@ piles = [pile1, pile2, pile3]
 
 bases = [base1, base2, base3]
 
+base2_pos = (710, 15)
+
+select = False
 
 @window.event
 def on_mouse_press(x, y, button, modifiers):
-        if pile1[-1].click(x, y):
-            print("bien joue")        
-        
-        for base in bases:
-            if base.click_aura:
-                print("ok")
+    global select
+     if pile1[-1].click(x, y):
+        select = True
+        while select:
+            if base2.click_aura(x, y):
+                pile1[-1].anchor_position = base2_pos
+
         
 
 
