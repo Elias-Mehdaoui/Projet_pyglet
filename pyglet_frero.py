@@ -47,7 +47,16 @@ class Rectangle:
             if x <= self.x + self.x_pos and y <= 300:
                 return True
 
-    
+    def clignote(self, x, y):
+         if x >= self.x_pos and y >= self.y_pos:
+             if x <= self.x + self.x_pos and y <= self.y + self.y_pos:
+                while self.r <= 235:
+                  self.r = self.r+1
+                  while self.g <= 253:
+                    self.g = self.g + 1
+                   while self.b <= 162:
+                    self.b = self.b + 1
+                    self.rectangle = pyglet.shapes.Rectangle(self.x_pos, self.y_pos, self.x, self.y, color=(self.r, self.g, self.b), batch=batch)    
 
 
 
