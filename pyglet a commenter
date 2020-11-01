@@ -1,0 +1,143 @@
+import pyglet
+
+window = pyglet.window.Window(720, 380, resizable = True)
+pyglet.gl.glClearColor(1,0.40,0.3, 1)
+batch = pyglet.graphics.Batch()
+
+class Rectangle:
+    
+    def __init__(self, x_pos, y_pos, x, y, r, g, b):
+        self.x = x
+        self.y = y
+        self.x_pos = x_pos
+        self.y_pos = y_pos
+        self.r = r
+        self.g = g
+        self.b = b
+        self.rectangle = pyglet.shapes.Rectangle(x_pos, y_pos, x, y, color=(r, g, b), batch=batch)
+        self.anchor_position = self.x/2, self.y/2  
+    
+    def click(self, x, y):
+        print(x, y)
+        if x >= self.x_pos and y >= self.y_pos:
+            if x <= self.x + self.x_pos and y <= self.y + self.y_pos:
+                return True
+
+    
+    def click_aura(self, x, y):
+        if x >= self.x_pos and y >= self.y_pos:
+            if x <= self.x + self.x_pos and y <= 300:
+                return True
+
+    def new_pos(self, x2, y2):
+        self.x_pos = x2
+        self.y_pos = y2
+        self.rectangle = Rectangle(self.x_pos, self.y_pos, self.x, self.y, self.r, self.g, self.b)
+
+
+
+
+def rectangle_select(x,y):
+    try :
+        if x >= pile1[-1].x_pos and x <= pile1[-1].x + pile1[-1].x_pos:
+            if y >= pile1[-1].y_pos and y <= pile1[-1].y + pile1[-1].y_pos:
+                return pile1            
+        elif x >= pile2[-1].x_pos and x <= pile2[-1].x + pile2[-1].x_pos:
+                if y >= pile2[-1].y_pos and y <= pile2[-1].y + pile2[-1].y_pos:
+                    return pile2
+        elif x >= pile3[-1].x_pos and x <= pile3[-1].x + pile3[-1].x_pos:
+                if y >= pile3[-1].y_pos and y <= pile3[-1].y + pile3[-1].y_pos:
+                    return pile3
+    except: IndexError                
+
+def base_select(x, y):
+        if x >= base1.x_pos and x <= base1.x + base1.x_pos:
+            if  y >= base1.y_pos and y <= 300:
+                return base1, pile1
+        elif x >= base2.x_pos and x <= base2.x + base2.x_pos:
+            if y >= base2.y_pos and y <= 300:
+                return base2, pile2
+        elif x >= base3.x_pos and y >= base3.y_pos:
+            if x <= base3.x + base3.x_pos and y <= 300:
+                return base3, pile3
+        else :
+            return None, None 
+            
+
+    
+
+
+
+barre1 = Rectangle(175, 0, 25, 300, 255, 255, 255)
+base1 = Rectangle(35, 0, 300, 30, 255, 255, 255)
+
+barre2 = Rectangle(700, 0, 25, 300, 255, 255, 255)
+base2 = Rectangle(560, 0, 300, 30, 255, 255, 255)
+
+barre3 = Rectangle(1225, 0, 25, 300, 255, 255, 255)
+base3 = Rectangle(1085, 0, 300, 30, 255, 255, 255)
+
+
+rectangle5 = Rectangle(50, 30, 275, 30, 93, 172, 255)
+rectangle4 = Rectangle(75, 60, 225, 30, 51, 141, 255)
+rectangle3 = Rectangle(100, 90, 175, 30, 245, 241, 11)
+rectangle2 = Rectangle(125, 120, 125, 30, 21,209, 125) 
+rectangle1 = Rectangle(150, 150, 75, 30, 223,209, 125)
+
+
+
+pile1 = [rectangle5, rectangle4, rectangle3, rectangle2, rectangle1]
+pile2 = []
+pile3 = []
+
+piles = (pile1, pile2, pile3)
+
+bases = (base1, base2, base3)
+
+
+
+
+
+select = False
+p_select = None
+
+
+@window.event
+def on_mouse_press(x, y, button, modifiers):
+    global select, p_select
+    
+    if not select:
+        select = True
+        p_select = rectangle_select(x, y)
+        print(p_select)
+        pass
+
+    elif select:
+        while select:     
+            b_select, new_p = base_select(x,y)
+            if not b_select :
+                pass
+            elif p_select == new_p :
+                select = False
+            elif p_select == None:
+                pass
+
+            else :    
+                p_select[-1].new_pos(b_select.x_pos + (b_select.x/2), b_select.y + len(new_p)*30)
+                new_p.append(p_select)
+                p_select.pop(-1)
+
+
+            select = False
+
+   
+
+
+
+
+
+@window.event
+def on_draw():
+    window.clear()
+    batch.draw()
+pyglet.app.run()
