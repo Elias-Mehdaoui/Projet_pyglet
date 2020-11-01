@@ -46,7 +46,10 @@ class Rectangle:
         if x >= self.x_pos and y >= self.y_pos:
             if x <= self.x + self.x_pos and y <= 300:
                 return True
-
+     """
+     pour faire clignoter fallait uiliser des variable de type float (avec des variable int le code s'éxecute trop vite),
+     mais il aurait fallu changer tout le code. J'ai donc choisi de definir une couleur lorque le rectangle est sélèctioner 
+     """
     def clignote(self, x, y):
          if x >= self.x_pos and y >= self.y_pos:
              if x <= self.x + self.x_pos and y <= self.y + self.y_pos:
