@@ -164,37 +164,70 @@ jeu = True
 
 @window.event
 def on_mouse_press(x, y, button, modifiers):
+ """
+ l'evenement mouse est une évenement qui permet d'informer le code de la position du curseur en x, y
+ """
     global select, p_select, old_b, jeu
-    
+    """
+    Ici nous récuperons des variable global qu'on retrouve plus haut. Si la variable select n'est pas fausse( FALSE)
+    alors select= TRUE. Les variable p_select et old_select qui ne valait rien sont maintenant egaux au valeur renvoyer
+    par la fonction rectangle_select. On utilise aussi la fonction (try-except) pour pouvoir gerer des exeptions ( Ici: TypeError).
+    Finalement si cette condition est remplie alors on passe le reste de la fonction
+    """
     if not select:
         select = True
         try:
             p_select, old_b = rectangle_select(x, y)
         except TypeError:
             pass
-
+    """
+    Si la condition précédente n'est pas remplie, alors::
+    """
     elif select:
         while select:
+       """
+       Tant que la variable select== FALSE, alors on essaye la méthode suivante qui consite à :
+       """
             try:
                 b_select, new_p = base_select(x,y)
+          """
+          si new_p et la position x du dernier élèment de p_select est supérieur à la position x du derniers élèments de new_p:
+          alors on passe le reste de la fonction
+          """
                 if new_p and p_select[-1].x > new_p[-1].x:
-                    pass         
+                    pass 
+            """"
+            Si la variable b_select n'est pas Vraie, c'est a dire b_select= base_select(x,y)  alors on passe le reste de la fonction
+            """"
                 elif not b_select :
                     pass
+              """
+              Si la variable p_select est égale a la nouvelle_pile alors on passe le reste de la fonction
+              """
                 elif p_select == new_p :
                     pass
+              """
+              Sinon si p_select ne vaut rien on passe le reste de la fonction
+              """
                 elif p_select == None:
                     pass
+                
                 else :    
                     p_select[-1].new_pos(b_select.x_pos + (p_select[-1].x_pos-old_b.x_pos), b_select.y + len(new_p)*30)
                     new_p.append(p_select[-1])
                     p_select.pop(-1)        
             except TypeError:
                 pass
-
+            """
+            On finis par réassocier les terme NONE à p_select et FALSE select afin de pouvoir réutiliser la fonction précédente
+            """
             p_select = None
             select = False
-            if victoire(pile2, pile3):
+            """
+            Enfin si la fonction de victoire est vraie alors jeu = False, c'est la fin du jeu
+            SInon on pass le reste de la fonction
+            """
+            if victoire( pile3):
                 jeu = False
             else :
                 pass
