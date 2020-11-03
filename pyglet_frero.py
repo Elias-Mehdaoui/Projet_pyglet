@@ -181,7 +181,7 @@ def on_mouse_press(x, y, button, modifiers):
         except TypeError:
             pass
     """
-    Si la condition précédente n'est pas remplie, alors::
+    Si la condition précédente n'est pas remplie, alors:
     """
     elif select:
         while select:
